@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
-import { Plus, History, Trash2 } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Plus, History, Trash2, ArrowRight } from 'lucide-react'
 import { ChatMessage } from '@/components/chat/ChatMessage'
 import { ChatInput } from '@/components/chat/ChatInput'
 import { sendMessage } from '@/api/openclaw'
+import type { NavigationHint } from '@/api/openclaw'
 import type { ChatMessage as Message, Session } from '@/api/types'
 import { useSettings } from '@/hooks/useSettings'
 
@@ -11,7 +13,10 @@ function generateId() {
 }
 
 export function Chat() {
+  const navigate = useNavigate()
   const settings = useSettings()
+  const [navHint, setNavHint] = useState<NavigationHint | null>(null)
+  const navTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
   const [sessions, setSessions] = useState<Session[]>(() => {
     const stored = localStorage.getItem('chat-sessions')
     return stored ? JSON.parse(stored) : []
@@ -120,6 +125,11 @@ export function Chat() {
               : m
           )
         )
+      },
+      onNavigation(hint) {
+        if (navTimerRef.current) clearTimeout(navTimerRef.current)
+        setNavHint(hint)
+        navTimerRef.current = setTimeout(() => setNavHint(null), 8000)
       },
       onDone() {
         setIsStreaming(false)
@@ -254,6 +264,33 @@ export function Chat() {
             </div>
           )}
         </div>
+
+        {navHint && (
+          <div className="mx-4 mb-2 flex items-center gap-3 px-4 py-2.5 rounded-lg bg-accent-dim border border-accent/30 animate-in slide-in-from-bottom-2">
+            <span className="text-sm text-accent-light flex-1">
+              跳转到 <strong>{navHint.label}</strong>？
+            </span>
+            <button
+              onClick={() => {
+                setNavHint(null)
+                if (navTimerRef.current) clearTimeout(navTimerRef.current)
+                navigate(navHint.route)
+              }}
+              className="flex items-center gap-1 px-3 py-1 rounded-md bg-accent text-white text-xs font-medium hover:bg-accent-light transition-colors"
+            >
+              前往 <ArrowRight size={12} />
+            </button>
+            <button
+              onClick={() => {
+                setNavHint(null)
+                if (navTimerRef.current) clearTimeout(navTimerRef.current)
+              }}
+              className="text-text-muted hover:text-text-secondary text-xs"
+            >
+              忽略
+            </button>
+          </div>
+        )}
 
         <ChatInput
           onSend={handleSend}
