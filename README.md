@@ -1,6 +1,6 @@
 # AI-Workflow-Web
 
-Lightweight web frontend for [AI-Workflow-Terminal](https://github.com/wangqioo/AI-Workflow-Terminal) -- a local AI operating system running on NVIDIA Jetson Orin + DGX Spark2.
+Lightweight web frontend for AI-Workflow-Terminal -- a local AI operating system with edge computing and GPU server inference.
 
 ## Architecture
 
@@ -41,10 +41,10 @@ Lightweight web frontend for [AI-Workflow-Terminal](https://github.com/wangqioo/
 | Page | Description |
 |------|-------------|
 | **Dashboard** | System status, connection health, CPU/GPU/memory metrics |
-| **AI Chat** | OpenClaw conversation with SSE streaming, session history, model switching (4B/35B) |
+| **AI Chat** | OpenClaw conversation with SSE streaming, session history, model switching |
 | **Workflows** | Browse, install, and run workflow packages (.ocw) |
 | **Apps** | Launcher for all 19+ backend services (AI, hardware, tools, system) |
-| **Tasks** | Cross-device task management via Task Agent + Cloud Relay |
+| **Tasks** | Cross-device task management via Task Agent |
 | **Settings** | Gateway addresses, model selection, language preferences |
 
 ## Quick Start
@@ -82,13 +82,11 @@ npm run build
 python3 -m http.server 3080 -d dist
 ```
 
-### On Jetson Orin (alongside Terminal backend)
+### With Node.js
 
 ```bash
-# Build and serve
 npm run build
-cp -r dist/ /opt/ai-workflow-web/
-# Add to nginx or serve directly
+node server.mjs
 ```
 
 ### Docker
@@ -123,16 +121,6 @@ src/
 ├── App.tsx           # Root component with router
 └── main.tsx          # Entry point
 ```
-
-## Comparison with Original Clients
-
-| | Flutter Desktop | Flutter Mobile | Tauri PC | **Web (this)** |
-|---|---|---|---|---|
-| Lines of code | ~48,000 | ~15,000 | ~3,000 | **~2,000** |
-| Platforms | Linux ARM64 | Android/iOS | Win/Mac/Linux | **All** |
-| Install required | Yes | Yes | Yes | **No** |
-| Auto-update | Manual | Store | Manual | **Instant** |
-| Hardware access | Direct | WiFi LAN | WiFi LAN | **WiFi LAN** |
 
 ## License
 

@@ -105,7 +105,7 @@ export function Dashboard() {
             </div>
             <div>
               <p className="text-xs text-text-muted">平台</p>
-              <p className="text-sm text-text-primary">NVIDIA Jetson Orin</p>
+              <p className="text-sm text-text-primary">Edge Device</p>
             </div>
           </div>
         </Card>

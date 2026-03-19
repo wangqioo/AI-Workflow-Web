@@ -60,13 +60,13 @@ export function Settings() {
         <div className="grid grid-cols-2 gap-3">
           <ModelOption
             label="服务端模型"
-            description="Qwen3.5-35B-A3B (DGX Spark2)"
+            description="Large model (Server)"
             selected={form.model === 'server'}
             onClick={() => setForm({ ...form, model: 'server' })}
           />
           <ModelOption
             label="本地模型"
-            description="Qwen3.5-4B (Jetson Orin)"
+            description="Small model (Local)"
             selected={form.model === 'local'}
             onClick={() => setForm({ ...form, model: 'local' })}
           />
